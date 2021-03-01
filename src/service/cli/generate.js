@@ -1,10 +1,8 @@
-'use strict';
-
-const fs = require('fs');
+const fs = require(`fs`);
 const {
   getRandomInt,
   shuffle
-} = require('../../utils');
+} = require(`../../utils`);
 
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
@@ -66,14 +64,14 @@ const PictureRestrict = {
 /**
  * Возвращает наименование файла с фотографией
  * @param {number} numeric
- * @returns {string}
+ * @return {string}
  */
 const getPicture = (numeric) => numeric > 10 ? `item${numeric}.jpg` : `item0${numeric}.jpg`;
 
 /**
  * Генерирует моки предложений
- * @param count
- * @returns {{description: string, sum: number, title: string, type: string, category: [string], picture: string}[]}
+ * @param {number} count
+ * @return {{description: string, sum: number, title: string, type: string, category: [string], picture: string}[]}
  */
 const generateOffers = (count) => (
   Array(count).fill({}).map(() => ({
@@ -101,4 +99,4 @@ module.exports = {
       return console.info(`Operation success. File created`);
     });
   }
-}
+};

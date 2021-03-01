@@ -34,4 +34,4 @@ const getRandomInt = (min, max) => {
 module.exports = {
   shuffle,
   getRandomInt
-}
+};
