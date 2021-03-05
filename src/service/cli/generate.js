@@ -1,52 +1,18 @@
-'use strict';
-
-const fs = require('fs');
+const fs = require(`fs`).promises;
 const {
   getRandomInt,
   shuffle
-} = require('../../utils');
+} = require(`../../utils`);
+const chalk = require(`chalk`);
+
+const File_path = {
+  SENTENCES: `./src/data/sentences.txt`,
+  CATEGORIES: `./src/data/categories.txt`,
+  TITLES: `./src/data/titles.txt`
+}
 
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
-
-const TITLES = [
-  `Продам книги Стивена Кинга.`,
-  `Продам новую приставку Sony Playstation 5.`,
-  `Продам отличную подборку фильмов на VHS.`,
-  `Куплю антиквариат.`,
-  `Куплю породистого кота.`,
-  `Продам коллекцию журналов «Огонёк».`,
-  `Отдам в хорошие руки подшивку «Мурзилка».`,
-  `Продам советскую посуду. Почти не разбита.`,
-  `Куплю детские санки.`
-];
-
-const SENTENCES = [
-  `Товар в отличном состоянии.`,
-  `Пользовались бережно и только по большим праздникам.`,
-  `Продаю с болью в сердце...`,
-  `Бонусом отдам все аксессуары.`,
-  `Даю недельную гарантию.`,
-  `Если товар не понравится — верну всё до последней копейки.`,
-  `Это настоящая находка для коллекционера!`,
-  `Если найдёте дешевле — сброшу цену.`,
-  `Таких предложений больше нет!`,
-  `Две страницы заляпаны свежим кофе.`,
-  `При покупке с меня бесплатная доставка в черте города.`,
-  `Кажется, что это хрупкая вещь.`,
-  `Мой дед не мог её сломать.`,
-  `Кому нужен этот новый телефон, если тут такое...`,
-  `Не пытайтесь торговаться. Цену вещам я знаю.`
-];
-
-const CATEGORIES = [
-  `Книги`,
-  `Разное`,
-  `Посуда`,
-  `Игры`,
-  `Животные`,
-  `Журналы`,
-];
 
 const OfferType = {
   OFFER: `offer`,
@@ -66,39 +32,60 @@ const PictureRestrict = {
 /**
  * Возвращает наименование файла с фотографией
  * @param {number} numeric
- * @returns {string}
+ * @return {string}
  */
 const getPicture = (numeric) => numeric > 10 ? `item${numeric}.jpg` : `item0${numeric}.jpg`;
 
 /**
  * Генерирует моки предложений
- * @param count
- * @returns {{description: string, sum: number, title: string, type: string, category: [string], picture: string}[]}
+ * @param {number} count
+ * @param {string[]} titles
+ * @param {string[]} sentences
+ * @param {string[]} categories
+ * @return {{description: string, sum: number, title: string, type: string, category: [string], picture: string}[]}
  */
-const generateOffers = (count) => (
+const generateOffers = (count, titles, sentences, categories) => (
   Array(count).fill({}).map(() => ({
-    title: TITLES[getRandomInt(0, TITLES.length - 1)],
+    title: titles[getRandomInt(0, titles.length - 1)],
     picture: getPicture(getRandomInt(PictureRestrict.MIN, PictureRestrict.MAX)),
-    description: shuffle(SENTENCES).slice(1, 5).join(` `),
+    description: shuffle(sentences).slice(1, 5).join(` `),
     type: OfferType[Object.keys(OfferType)[Math.floor(Math.random() * Object.keys(OfferType).length)]],
     sum: getRandomInt(SumRestrict.MIN, SumRestrict.MAX),
-    category: [CATEGORIES[getRandomInt(0, CATEGORIES.length - 1)]],
+    category: [categories[getRandomInt(0, categories.length - 1)]],
   }))
 );
 
-module.exports = {
-  name: `--generate`,
-  run(args) {
-    const [count] = args;
-    const countOffers = Number.parseInt(count, 10) || DEFAULT_COUNT;
-    const content = JSON.stringify(generateOffers(countOffers));
-
-    fs.writeFile(FILE_NAME, content, (err) => {
-      if (err) {
-        return console.error(`Can't write data to file...`);
-      }
-
-      return console.info(`Operation success. File created`);
-    });
+/**
+ * Читает контент из текстового файла
+ * @param {string} filePath
+ * @return {string[]}
+ */
+const readContent = async (filePath) => {
+  try {
+    const content = await fs.readFile(filePath, `utf8`);
+    return content.split(`\n`);
+  } catch (err) {
+    console.error(chalk.red(err));
+    return [];
   }
 }
+
+module.exports = {
+  name: `--generate`,
+  async run(args) {
+    const [count] = args;
+    const countOffers = Number.parseInt(count, 10) || DEFAULT_COUNT;
+
+    const [titles, sentences, categories] = await Promise.all([
+      readContent(File_path.TITLES),
+      readContent(File_path.SENTENCES),
+      readContent(File_path.CATEGORIES)
+    ]);
+    const content = JSON.stringify(generateOffers(countOffers, titles, sentences, categories));
+
+    fs.writeFile(FILE_NAME, content)
+      .then(() => console.info(chalk.green(`Operation success. File created`)),
+        () => console.error(chalk.red(`Can't write data to file...`))
+      );
+  }
+};
