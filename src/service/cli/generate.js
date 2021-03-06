@@ -5,14 +5,15 @@ const {
 } = require(`../../utils`);
 const chalk = require(`chalk`);
 
-const File_path = {
-  SENTENCES: `./src/data/sentences.txt`,
-  CATEGORIES: `./src/data/categories.txt`,
-  TITLES: `./src/data/titles.txt`
-}
 
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
+const ENCODING = `utf8`;
+const FilePath = {
+  SENTENCES: `./src/data/sentences.txt`,
+  CATEGORIES: `./src/data/categories.txt`,
+  TITLES: `./src/data/titles.txt`
+};
 
 const OfferType = {
   OFFER: `offer`,
@@ -62,13 +63,13 @@ const generateOffers = (count, titles, sentences, categories) => (
  */
 const readContent = async (filePath) => {
   try {
-    const content = await fs.readFile(filePath, `utf8`);
+    const content = await fs.readFile(filePath, ENCODING);
     return content.split(`\n`);
   } catch (err) {
     console.error(chalk.red(err));
     return [];
   }
-}
+};
 
 module.exports = {
   name: `--generate`,
@@ -77,15 +78,15 @@ module.exports = {
     const countOffers = Number.parseInt(count, 10) || DEFAULT_COUNT;
 
     const [titles, sentences, categories] = await Promise.all([
-      readContent(File_path.TITLES),
-      readContent(File_path.SENTENCES),
-      readContent(File_path.CATEGORIES)
+      readContent(FilePath.TITLES),
+      readContent(FilePath.SENTENCES),
+      readContent(FilePath.CATEGORIES)
     ]);
     const content = JSON.stringify(generateOffers(countOffers, titles, sentences, categories));
 
     fs.writeFile(FILE_NAME, content)
       .then(() => console.info(chalk.green(`Operation success. File created`)),
-        () => console.error(chalk.red(`Can't write data to file...`))
+          () => console.error(chalk.red(`Can't write data to file...`))
       );
   }
 };
