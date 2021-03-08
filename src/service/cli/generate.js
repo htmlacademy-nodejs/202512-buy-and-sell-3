@@ -10,9 +10,9 @@ const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
 const ENCODING = `utf8`;
 const FilePath = {
-  SENTENCES: `./src/data/sentences.txt`,
-  CATEGORIES: `./src/data/categories.txt`,
-  TITLES: `./src/data/titles.txt`
+  SENTENCES: `./data/sentences.txt`,
+  CATEGORIES: `./data/categories.txt`,
+  TITLES: `./data/titles.txt`
 };
 
 const OfferType = {
@@ -40,10 +40,10 @@ const getPicture = (numeric) => numeric > 10 ? `item${numeric}.jpg` : `item0${nu
 /**
  * Генерирует моки предложений
  * @param {number} count
- * @param {string[]} titles
- * @param {string[]} sentences
- * @param {string[]} categories
- * @return {{description: string, sum: number, title: string, type: string, category: [string], picture: string}[]}
+ * @param {Array<string>} titles
+ * @param {Array<string>} sentences
+ * @param {Array<string>} categories
+ * @return {Array<{description: string, sum: number, title: string, type: string, category: Array<string>, picture: string}>}
  */
 const generateOffers = (count, titles, sentences, categories) => (
   Array(count).fill({}).map(() => ({
@@ -59,12 +59,13 @@ const generateOffers = (count, titles, sentences, categories) => (
 /**
  * Читает контент из текстового файла
  * @param {string} filePath
- * @return {string[]}
+ * @return {Promise<Array<string>>}
  */
 const readContent = async (filePath) => {
   try {
-    const content = await fs.readFile(filePath, ENCODING);
-    return content.split(`\n`);
+    let content = await fs.readFile(filePath, ENCODING);
+    content = content.split(`\n`);
+    return content.slice(0, content.length - 1);
   } catch (err) {
     console.error(chalk.red(err));
     return [];
@@ -84,9 +85,11 @@ module.exports = {
     ]);
     const content = JSON.stringify(generateOffers(countOffers, titles, sentences, categories));
 
-    fs.writeFile(FILE_NAME, content)
-      .then(() => console.info(chalk.green(`Operation success. File created`)),
-          () => console.error(chalk.red(`Can't write data to file...`))
-      );
+    try {
+      await fs.writeFile(FILE_NAME, content);
+      console.info(chalk.green(`Operation success. File created`));
+    } catch (ex) {
+      console.error(chalk.red(`Can't write data to file...`));
+    }
   }
 };
