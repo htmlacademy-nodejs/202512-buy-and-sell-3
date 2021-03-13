@@ -1,0 +1,13 @@
+extends ../layouts/layout.pug
+block variables
+  - var isLogged = true;
+
+block content
+    main.page-content
+      section.ticket-form
+        .ticket-form__wrapper
+          h1.ticket-form__title Редактировать публикацию
+          .ticket-form__tile
+            - var ticket = {title: 'Мое старое кресло', photo: '/img/item02.jpg', categories: ['Электроника', 'Спорт/отдых'], description: 'Продам свое старое кресло, чтобы сидеть и читать книги зимними вечерами. Ножки мягкие, мой пол не царапают.', type: 'sell', price: 4000}
+            - var mode = 'edit';
+            include ../components/ticket-edit

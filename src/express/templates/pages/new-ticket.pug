@@ -1,0 +1,12 @@
+extends ../layouts/layout.pug
+block variables
+  - var isLogged = true;
+
+block content
+    main.page-content
+      section.ticket-form
+        .ticket-form__wrapper
+          h1.ticket-form__title Новая публикация
+          .ticket-form__tile
+            - var ticket = {title: '', photo: null, categories: [], description: '', type: '', price: null}
+              include ../components/ticket-edit
