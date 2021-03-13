@@ -1,0 +1,15 @@
+- var errorNavLinks = [ {title: 'Вход и регистрация', url: '/register'}, {title: 'Новая публикация', url: '/offers/add'}, {title: 'Главная страница', url: '/'} ];
+
+section.error
+  h1.error__title #{title}
+  h2.error__subtitle #{subtitle}
+  ul.error__list
+    each navLink in errorNavLinks
+      li.error__item
+        a(href=navLink.url) #{navLink.title}
+  form.error__search.search.search--small(method='get' action='#' autocomplete='off')
+    input(type='search' name='search' placeholder='Поиск' aria-label='Поиск')
+    .search__icon
+    .search__close-btn
+  a.error__logo.logo(href='/main.html')
+    img(src='/img/logo.svg' width='179' height='34' alt='Логотип Куплю Продам')

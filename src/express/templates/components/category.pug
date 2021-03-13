@@ -1,0 +1,8 @@
+li.categories-list__item
+  - var activeClass = category.active ? 'category-tile--active' : 'category-tile--default';
+  a.category-tile(class=activeClass href='#' )
+    span.category-tile__image
+      img(src=category.icon.src srcset=category.icon.srcset alt=category.title)
+    span.category-tile__label
+      | #{category.title}
+      span.category-tile__qty.js-qty #{category.quantity}

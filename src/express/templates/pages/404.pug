@@ -1,0 +1,11 @@
+extends ../layouts/layout.pug
+block variables
+  - var isDefault = false;
+  - var classList = {html: 'html-not-found', body: 'body-not-found'}
+
+block content
+  main
+    section.error
+      - var title = '404';
+      - var subtitle = 'Страница не найдена';
+      include ../components/error-content.pug
