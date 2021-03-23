@@ -1,0 +1,23 @@
+extends ../layouts/layout.pug
+block variables
+  - var isLogged = true;
+
+block content
+  main.page-content
+    section.categories-list
+      h1.visually-hidden Сервис объявлений "Куплю - продам"
+      ul.categories-list__wrapper
+        each category in categories
+          include ../components/category
+    section.tickets-list
+      h2.visually-hidden Предложения из категории электроника
+      .tickets-list__wrapper
+        .tickets-list__header
+          p.tickets-list__title
+            | #{currentCategory.name}
+            b.js-qty #{currentCategory.quantity}
+        ul
+          each ticket in tickets
+            include ../components/ticket
+        .tickets-list__pagination
+            include ../components/pagination

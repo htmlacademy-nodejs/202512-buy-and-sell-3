@@ -1,0 +1,8 @@
+li.categories-list__item
+  - var activeClass = currentCategory && currentCategory.name === category.name ? 'category-tile--active' : 'category-tile--default';
+  a.category-tile(class=activeClass href='/offers/category/' + category.name)
+    span.category-tile__image
+      img(src=category.picture alt=category.title)
+    span.category-tile__label
+      | #{category.displayName}
+      span.category-tile__qty.js-qty #{category.quantity}

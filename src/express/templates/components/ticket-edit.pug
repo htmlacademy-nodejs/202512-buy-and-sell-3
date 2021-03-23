@@ -1,0 +1,38 @@
+- var uploaded = ticket.picture ? 'uploaded' : '';
+
+form.ticket-form__form.form(action='#' method='post' enctype='multipart/form-data' autocomplete='off')
+  .ticket-form__avatar-container.js-preview-container(class=uploaded)
+    .ticket-form__avatar.js-preview
+      if (ticket.picture)
+        img(src=ticket.picture alt='')
+    .ticket-form__field-avatar
+      input#avatar.visually-hidden.js-file-field(type='file' name='avatar')
+      label(for='avatar')
+        span.ticket-form__text-upload Загрузить фото…
+        span.ticket-form__text-another Загрузить другое фото…
+  .ticket-form__content
+    .ticket-form__row
+      .form__field
+        input#ticket-name.js-field(type='text' name='ticket-name' value=ticket.title required='')
+        label(for='ticket-name') Название
+        span Обязательное поле
+    .ticket-form__row
+      .form__field
+        textarea#comment-field.js-field(name='comment' cols='30' rows='10' maxlength='400' minlength='50') #{ticket.description}
+        label(for='comment-field') Описание
+        span Обязательное поле
+    .ticket-form__row
+      select#category-field.form__select.js-multiple-select(name='category' data-label='Выбрать категорию публикации' multiple=true)
+        each category, index in categories
+          option(value=index selected=isSelected) #{category.displayName}
+    .ticket-form__row
+      .form__field.form__field--price
+        input#price-field.js-field.js-price(type='number' name='price' min='1' required='' value=ticket.price)
+        label(for='price-field') Цена
+        span Обязательное поле
+      .form__switch.switch
+        each action in actions
+          .switch__item
+            input.visually-hidden(id=action.name + '-field' type='radio' name='action' value=action.name checked=action.name === ticket.type)
+            label.switch__button(for=action.name + '-field') #{action.displayName}
+  button.form__button.btn.btn--medium.js-button(type='submit') #{ticket.id ? 'Сохранить' : 'Опубликовать'}

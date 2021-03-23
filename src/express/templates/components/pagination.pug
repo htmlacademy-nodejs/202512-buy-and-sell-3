@@ -1,0 +1,7 @@
+- var pages = pagination.list.slice(0, 5);
+- pages.push({number: 'дальше', url: '#'})
+
+ul.pagination
+    each page in pages
+      li
+        a(class=pagination.currentPage === page.number ? 'active' : '' href=page.url) #{page.number}

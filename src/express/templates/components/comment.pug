@@ -1,0 +1,10 @@
+li.js-card
+  .comment-card
+    .comment-card__header
+      a.comment-card__avatar.avatar(href=comment.author.profile)
+        img(src=comment.author.picture alt=comment.author.name)
+      p.comment-card__author #{comment.author.name}
+    .comment-card__content
+      p
+        | #{comment.message}
+    button.comment-card__delete.js-delete(type='button') Удалить

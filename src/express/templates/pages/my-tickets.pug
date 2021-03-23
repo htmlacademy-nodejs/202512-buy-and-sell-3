@@ -1,0 +1,16 @@
+extends ../layouts/layout.pug
+block variables
+  - var isLogged = true;
+
+block content
+  main.page-content
+    section.tickets-list
+      h2.visually-hidden Самые новые предложения
+      .tickets-list__wrapper
+        .tickets-list__header
+          a.tickets-list__btn.btn.btn--big(href='/offers/add')
+            span Новая публикация
+        ul
+            each ticket in tickets
+              include ../components/ticket
+

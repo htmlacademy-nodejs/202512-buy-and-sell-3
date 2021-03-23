@@ -1,0 +1,12 @@
+extends ../layouts/layout.pug
+block variables
+  - var isDefault = false;
+  - var classList = {html: 'html-server', body: 'body-server'}
+
+block content
+  main
+    section.error
+      - var title = '500';
+      - var subtitle = 'Ошибка cервера';
+      include ../components/error-content.pug
+
