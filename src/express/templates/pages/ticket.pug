@@ -1,7 +1,4 @@
 extends ../layouts/layout.pug
-block variables
-  - var isLogged = true;
-  - var isGuest = !isLogged;
 block content
   main.page-content
     section.ticket
@@ -31,14 +28,13 @@ block content
                 b Контакты:
                 a(href='mailto:shkatulkin@ya.ru') shkatulkin@ya.ru
 
-            - var categories = [{ title: 'Дом', quantity: 81, icon: {src: '/img/cat.jpg', srcset: '/img/cat@2x.jpg 2x'}, active: false }, { title: 'Электроника', quantity: 62, icon: {src: '/img/cat02.jpg', srcset: '/img/cat02@2x.jpg 2x'}, active: true }, { title: 'Одежда', quantity: 106, icon: {src: '/img/cat03.jpg', srcset: '/img/cat03@2x.jpg 2x'}, active: false }, { title: 'Спорт/отдых', quantity: 86, icon: {src: '/img/cat04.jpg', srcset: '/img/cat04@2x.jpg 2x'}, active: false }, { title: 'Авто', quantity: 34, icon: {src: '/img/cat05.jpg', srcset: '/img/cat05@2x.jpg 2x'}, active: false }, { title: 'Книги', quantity: 92, icon: {src: '/img/cat06.jpg', srcset: '/img/cat06@2x.jpg 2x'}, active: false }]
             ul.ticket__tags
               each category in categories
                 li
-                  a.category-tile.category-tile--small(href='#')
+                  a.category-tile.category-tile--small(href='/offers/category/' + category.name)
                     span.category-tile__image
-                      img(src=category.icon.src srcset=category.icon.srcset  alt=category.title)
-                    span.category-tile__label #{category.title}
+                      img(src=category.picture alt=category.name)
+                    span.category-tile__label #{category.displayName}
         .ticket__comments
           if (isGuest)
             .ticket__warning
@@ -51,8 +47,6 @@ block content
           if (isLogged)
             .ticket__comment-form
               include ../components/add-comment
-          - var comments = [{author: {name: 'Александр Бурый', profile: '#', photo: {src: '/img/avatar03.jpg', srcset: '/img/avatar03@2x.jpg 2x'}}, message: 'А что с прогоном автомобиля? Также вижу на фото зимнюю резину. А летняя идет ли впридачу?'}]
-
           if (comments.length)
             .ticket__comments-list
               ul.comments-list

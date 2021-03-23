@@ -1,10 +1,7 @@
 extends ../layouts/layout.pug
-block variables
-  - var isLogged = true;
 
 block content
   main.page-content
-  - var comments = [{author: {name: 'Александр Бурый', profile: '#', photo: {src: '/img/avatar03.jpg', srcset: '/img/avatar03@2x.jpg 2x'}}, message: 'А что с прогоном автомобиля? Также вижу на фото зимнюю резину. А летняя идет ли впридачу?'}]
 
     section.comments
         .comments__wrapper

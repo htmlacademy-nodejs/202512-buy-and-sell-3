@@ -10,11 +10,12 @@ const DEFAULT_PORT = 8080;
 
 const app = express();
 
+app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
+
 app.use(`/offers`, offersRoutes);
 app.use(`/my`, myRoutes);
 app.use(`/`, mainRoutes);
-
-app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
+app.get(`*`, (req, res) => res.render(`pages/404`));
 
 app.set(`views`, path.resolve(__dirname, `templates`));
 app.set(`view engine`, `pug`);

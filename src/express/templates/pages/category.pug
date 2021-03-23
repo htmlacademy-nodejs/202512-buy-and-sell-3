@@ -7,7 +7,6 @@ block content
     section.categories-list
       h1.visually-hidden Сервис объявлений "Куплю - продам"
       ul.categories-list__wrapper
-        - var categories = [{ title: 'Дом', quantity: 81, icon: {src: '/img/cat.jpg', srcset: '/img/cat@2x.jpg 2x'}, active: false }, { title: 'Электроника', quantity: 62, icon: {src: '/img/cat02.jpg', srcset: '/img/cat02@2x.jpg 2x'}, active: true }, { title: 'Одежда', quantity: 106, icon: {src: '/img/cat03.jpg', srcset: '/img/cat03@2x.jpg 2x'}, active: false }, { title: 'Спорт/отдых', quantity: 86, icon: {src: '/img/cat04.jpg', srcset: '/img/cat04@2x.jpg 2x'}, active: false }, { title: 'Авто', quantity: 34, icon: {src: '/img/cat05.jpg', srcset: '/img/cat05@2x.jpg 2x'}, active: false }, { title: 'Книги', quantity: 92, icon: {src: '/img/cat06.jpg', srcset: '/img/cat06@2x.jpg 2x'}, active: false }]
         each category in categories
           include ../components/category
     section.tickets-list
@@ -15,13 +14,10 @@ block content
       .tickets-list__wrapper
         .tickets-list__header
           p.tickets-list__title
-            - var currentCategory = categories.find(function(category) { return category.active });
-            | #{currentCategory.title}
+            | #{currentCategory.name}
             b.js-qty #{currentCategory.quantity}
         ul
-          - var tickets = [{title: 'Монстера', categories: ['Дом'], type: 'Куплю',photo: {src: '/img/item01.jpg', srcset: '/img/item01@2x.jpg 2x'},sum: 1000,description: 'Куплю монстеру зеленую в хорошем зеленом состоянии, буду поливать...'},{title: 'Мое старое кресло',categories: ['Дом'],type: 'Продам',photo: {src: '/img/item02.jpg', srcset: '/img/item02@2x.jpg 2x'},sum: 4000,description: 'Продам свое старое кресло, чтобы сидеть и читать книги зимними...'},{title: 'Дедушкины часы', categories: ['Электроника'],type: 'Продам',photo: {src: '/img/item03.jpg', srcset: '/img/item03@2x.jpg 2x'},sum: 45000,description: 'Продаю дедушкины часы в прекрасном состоянии, ходят до...'},{title: 'Кофеварка',categories: ['Дом'],type: 'Куплю',photo: {src: '/img/item04.jpg', srcset: '/img/item04@2x.jpg 2x'},sum: 2000,description: 'Куплю вот такую итальянскую кофеварку, можно любой фирмы...'},{title: 'Ленд Ровер',categories: ['Авто', 'Электроника'],type: 'Продам',photo: {src: '/img/item05.jpg', srcset: '/img/item05@2x.jpg 2x'},sum: 900000,description: 'Куплю монстеру зеленую в хорошем зеленом состоянии, буду поливать...'},{title: 'Кофеварка',categories: ['Электроника'],type: 'Продам',photo: {src: '/img/item04.jpg', srcset: '/img/item04@2x.jpg 2x'},sum: 88000,description: 'Куплю вот такую итальянскую кофеварку, можно любой фирмы...'}]
           each ticket in tickets
             include ../components/ticket
         .tickets-list__pagination
-          - var pagination = {currentPage: 1, list: [ {number: 1, url: '#'}, {number: 2, url: '#'}, {number: 3, url: '#'}, {number: 4, url: '#'}, {number: 5, url: '#'}, {number: 6, url: '#'} ]};
             include ../components/pagination

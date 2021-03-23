@@ -1,15 +1,16 @@
 li.tickets-list__item
   .ticket-card.ticket-card--color01
     .ticket-card__img
-      img(src=ticket.photo.src srcset=ticket.photo.srcset alt=ticket.title)
+      if (ticket.picture)
+        img(src=ticket.picture alt=ticket.title)
     .ticket-card__info
       span.ticket-card__label #{ticket.type}
       .ticket-card__categories
-        each category in ticket.categories
-          a(href='#') #{category}
+        each category in ticket.category
+          a(href='/offers/category') #{category}
       .ticket-card__header
         h3.ticket-card__title
-          a(href='#') #{ticket.title}
+          a(href='/offers/' + ticket.id) #{ticket.title}
         p.ticket-card__price
           span.js-sum #{ticket.sum}
           |  ₽

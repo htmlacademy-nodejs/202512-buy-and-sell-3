@@ -1,10 +1,10 @@
-- var uploaded = ticket.photo ? 'uploaded' : '';
+- var uploaded = ticket.picture ? 'uploaded' : '';
 
 form.ticket-form__form.form(action='#' method='post' enctype='multipart/form-data' autocomplete='off')
   .ticket-form__avatar-container.js-preview-container(class=uploaded)
     .ticket-form__avatar.js-preview
-      if (ticket.photo)
-        img(src=ticket.photo alt='')
+      if (ticket.picture)
+        img(src=ticket.picture alt='')
     .ticket-form__field-avatar
       input#avatar.visually-hidden.js-file-field(type='file' name='avatar')
       label(for='avatar')
@@ -22,22 +22,17 @@ form.ticket-form__form.form(action='#' method='post' enctype='multipart/form-dat
         label(for='comment-field') Описание
         span Обязательное поле
     .ticket-form__row
-      - var categories = [{ title: 'Дом', quantity: 81, icon: {src: '/img/cat.jpg', srcset: '/img/cat@2x.jpg 2x'}, active: false }, { title: 'Электроника', quantity: 62, icon: {src: '/img/cat02.jpg', srcset: '/img/cat02@2x.jpg 2x'}, active: true }, { title: 'Одежда', quantity: 106, icon: {src: '/img/cat03.jpg', srcset: '/img/cat03@2x.jpg 2x'}, active: false }, { title: 'Спорт/отдых', quantity: 86, icon: {src: '/img/cat04.jpg', srcset: '/img/cat04@2x.jpg 2x'}, active: false }, { title: 'Авто', quantity: 34, icon: {src: '/img/cat05.jpg', srcset: '/img/cat05@2x.jpg 2x'}, active: false }, { title: 'Книги', quantity: 92, icon: {src: '/img/cat06.jpg', srcset: '/img/cat06@2x.jpg 2x'}, active: false }]
       select#category-field.form__select.js-multiple-select(name='category' data-label='Выбрать категорию публикации' multiple=true)
         each category, index in categories
-          - var isSelected = ticket.categories.includes(category.title);
-          option(value=index selected=isSelected) #{category.title}
+          option(value=index selected=isSelected) #{category.displayName}
     .ticket-form__row
       .form__field.form__field--price
         input#price-field.js-field.js-price(type='number' name='price' min='1' required='' value=ticket.price)
         label(for='price-field') Цена
         span Обязательное поле
-      - var actions = [{name: 'buy', displayName: 'Куплю'}, {name: 'sell', displayName: 'Продам'}];
       .form__switch.switch
         each action in actions
-          - var id = action.name + '-field';
-          - var isChecked = action.name === ticket.type;
           .switch__item
-            input.visually-hidden(id=id type='radio' name='action' value=action.name checked=isChecked)
-            label.switch__button(for=id) #{action.displayName}
-  button.form__button.btn.btn--medium.js-button(type='submit' disabled=!mode) #{ mode ? 'Сохранить' : 'Опубликовать'}
+            input.visually-hidden(id=action.name + '-field' type='radio' name='action' value=action.name checked=action.name === ticket.type)
+            label.switch__button(for=action.name + '-field') #{action.displayName}
+  button.form__button.btn.btn--medium.js-button(type='submit') #{ticket.id ? 'Сохранить' : 'Опубликовать'}
